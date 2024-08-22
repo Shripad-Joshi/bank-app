@@ -1,14 +1,13 @@
 package com.bank_Project.bank_app.entity;
 
 import com.bank_Project.bank_app.DTO.UserDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,12 +16,16 @@ import java.time.LocalDateTime;
 @Setter
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     private String name;
-    private LocalDateTime dob;
+    private LocalDate dob;
+    @Column(nullable = false,unique = true)
     private String username;
     private String password;
+    @Column(nullable = false,unique = true)
     private String email;
+    @Column(nullable = false,unique = true)
     private String phoneNumber;
 
     @Column(name="created_At",updatable=false)
@@ -33,15 +36,15 @@ public class User {
 
     public static UserDTO prepareUserDTO(User userEntity){
         UserDTO userDTO=new UserDTO();
-        userDTO.setUserId(userEntity.userId);
-        userDTO.setUsername(userEntity.username);
-        userDTO.setName(userEntity.name);
-        userDTO.setDob(userEntity.dob);
-        userDTO.setPassword(userEntity.password);
-        userDTO.setEmail(userEntity.email);
-        userDTO.setPhoneNumber(userEntity.phoneNumber);
-        userDTO.setCreatedAt(userEntity.createdAt);
-        userDTO.setUpdateAt(userEntity.updateAt);
+        userDTO.setUserId(userEntity.getUserId());
+        userDTO.setUsername(userEntity.getUsername());
+        userDTO.setName(userEntity.getName());
+        userDTO.setDob(userEntity.getDob());
+        userDTO.setPassword(userEntity.getPassword());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setPhoneNumber(userEntity.getPhoneNumber());
+        userDTO.setCreatedAt(userEntity.getCreatedAt());
+        userDTO.setUpdateAt(userEntity.getUpdateAt());
         return userDTO;
     }
 }
