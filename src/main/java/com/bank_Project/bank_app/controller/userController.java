@@ -23,37 +23,40 @@ public class userController {
     }
 
     @GetMapping(produces="application/json",path="/getUser")
-    public ResponseEntity<ApiResponse<UserDTO>> getUser(@RequestParam("id") int id){
+    public ResponseEntity<ApiResponse<UserDTO>> getUser(@RequestParam("id") Long id){
         UserDTO userDTO=userService.getUserById(id);
+        ApiResponse<UserDTO> apiResponse;
         if(userDTO!=null){
-            ApiResponse<UserDTO> apiResponse=new ApiResponse<>("User found successfully.",200,userDTO);
+            apiResponse=new ApiResponse<>("User found successfully.",200,userDTO);
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }else{
-            ApiResponse<UserDTO> apiResponse=new ApiResponse<>("User not found.",404,null);
+            apiResponse=new ApiResponse<>("User not found.",404,null);
             return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping(produces="application/json",path="/deleteUser")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestParam("Id") int id){
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@RequestParam("Id") Long id){
         ApiResponse response;
         if(userService.checkUser(id)!=null) {
             UserDTO userDTO=userService.deleteUser(id);
             response = new ApiResponse<>("User deleted successfully.", 200, userDTO);
+            return new ResponseEntity<>(response,HttpStatus.OK);
         }else{
-            response=new ApiResponse<>(("User not found with id."+id),404,null);
+            response=new ApiResponse<>(("User not found with "+id+"."),404,null);
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @PostMapping(consumes = "application/json",path="/updateUser")
-    public ResponseEntity<ApiResponse<UserDTO>> updateUser(@RequestParam("Id") int id,@RequestBody UserDTO userDTO){
+    @PostMapping(consumes = "application/json",produces = "json/application",path="/updateUser")
+    public ResponseEntity<ApiResponse<UserDTO>> updateUser(@RequestParam("Id") Long id,@RequestBody UserDTO userDTO){
+        ApiResponse<UserDTO> apiResponse;
         if(userService.checkUser(id)!= null) {
             UserDTO updatedUser=userService.updateUser(id,userDTO);
-            ApiResponse<UserDTO> response = new ApiResponse<>("User updated successfully.", 200, updatedUser);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+             apiResponse= new ApiResponse<>("User updated successfully.", 200, updatedUser);
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }else{
-            ApiResponse<UserDTO> apiResponse=new ApiResponse<>("User not found.",404,null);
+            apiResponse=new ApiResponse<>("User not found.",404,null);
             return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
         }
     }

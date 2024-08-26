@@ -31,14 +31,14 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public UserDTO deleteUser(int id) {
+    public UserDTO deleteUser(Long id) {
         User user=userRepository.getById(id);
         userRepository.deleteById(id);
         return User.prepareUserDTO(user);
     }
 
     @Override
-    public UserDTO getUserById(int id) {
+    public UserDTO getUserById(Long id) {
         Optional<User> user=userRepository.findById(id);
         if(user.isPresent()){
             return User.prepareUserDTO(user.get());
@@ -48,7 +48,7 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public UserDTO updateUser(int id, UserDTO userDTO) {
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user=userRepository.getById(id);
         userDTO.setUserId(user.getUserId());
 
@@ -62,7 +62,7 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public String checkUser(int id) {
+    public String checkUser(Long id) {
         if(userRepository.findById(id).isPresent())
             return "present";
         return null;

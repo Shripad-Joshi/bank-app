@@ -1,9 +1,12 @@
 package com.bank_Project.bank_app.entity;
 
+import com.bank_Project.bank_app.DTO.AccountDTO;
 import com.bank_Project.bank_app.enums.AccountStatus;
 import com.bank_Project.bank_app.enums.AccountType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -13,11 +16,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Account {
-    private int account_id;
+    @Id
+    private Long account_id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
-    private int userid;
+    @JoinColumn(name = "user_id",nullable = false,referencedColumnName="userId")
+    private Long userId;
 
     @Column(nullable = false,unique = true)
     private String account_number;
@@ -39,5 +43,16 @@ public class Account {
     @Column(name="updated_At")
     private LocalDateTime updateAt;
 
-
+    public static AccountDTO prepareAccountDTO(Account account){
+        AccountDTO accountDTO=new AccountDTO();
+        accountDTO.setAccount_id(account.getAccount_id());
+        accountDTO.setAccount_number(account.getAccount_number());
+        accountDTO.setUser_id(accountDTO.getUser_id());
+        accountDTO.setBalance(accountDTO.getBalance());
+        accountDTO.setStatus(accountDTO.getStatus());
+        accountDTO.setAccountType(accountDTO.getAccountType());
+        accountDTO.setCreatedAt(accountDTO.getCreatedAt());
+        accountDTO.setUpdateAt(accountDTO.getUpdateAt());
+        return accountDTO;
+    }
 }

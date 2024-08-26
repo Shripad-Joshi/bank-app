@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class UserDTO {
-    private int userId;
+    private Long userId;
     private String username;
     private String name;
     private LocalDate dob;
