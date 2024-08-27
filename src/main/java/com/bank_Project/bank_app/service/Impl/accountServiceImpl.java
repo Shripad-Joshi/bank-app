@@ -1,6 +1,7 @@
 package com.bank_Project.bank_app.service.Impl;
 
 import com.bank_Project.bank_app.DTO.AccountDTO;
+import com.bank_Project.bank_app.DTO.UserDTO;
 import com.bank_Project.bank_app.advice.ResourceNotFoundException;
 import com.bank_Project.bank_app.entity.Account;
 import com.bank_Project.bank_app.repository.accountRepository;
@@ -20,6 +21,9 @@ public class accountServiceImpl implements accountService {
 
     @Autowired
     accountRepository accountRepository;
+
+    @Autowired
+    userServiceImpl userService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -64,7 +68,7 @@ public class accountServiceImpl implements accountService {
 
     @Override
     public List<AccountDTO> getAccountListByUserId(Long id) {
-        List<Account> accountList=accountRepository.findAllAccountByUserId(id);
+        List<Account> accountList=accountRepository.findAllAccountByUser(UserDTO.prepareUserEntity(userService.getUserById(id)));
         return accountList.stream()
                 .map(account -> modelMapper.map(account, AccountDTO.class))
                 .collect(Collectors.toList());

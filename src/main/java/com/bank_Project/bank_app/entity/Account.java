@@ -17,11 +17,12 @@ import java.time.LocalDateTime;
 @Setter
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long account_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false,referencedColumnName="userId")
-    private Long userId;
+    private User user;
 
     @Column(nullable = false,unique = true)
     private String account_number;
@@ -47,7 +48,7 @@ public class Account {
         AccountDTO accountDTO=new AccountDTO();
         accountDTO.setAccount_id(account.getAccount_id());
         accountDTO.setAccount_number(account.getAccount_number());
-        accountDTO.setUser_id(accountDTO.getUser_id());
+        accountDTO.setUserId(account.getUser().getUserId());
         accountDTO.setBalance(accountDTO.getBalance());
         accountDTO.setStatus(accountDTO.getStatus());
         accountDTO.setAccountType(accountDTO.getAccountType());
