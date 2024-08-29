@@ -6,6 +6,7 @@ import com.bank_Project.bank_app.enums.TransactionType;
 import com.bank_Project.bank_app.service.Impl.accountServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TransactionDTO {
 
     @Autowired
@@ -21,6 +23,7 @@ public class TransactionDTO {
 
     private Long transaction_id;
     private Long accountId;
+    private Long transfered_account_id;
     private TransactionType transactionType;
     private double amount;
     private LocalDateTime transactionDate;
@@ -34,6 +37,7 @@ public class TransactionDTO {
         Transaction transaction=new Transaction();
         transaction.setId(transactionDTO.getTransaction_id());
         transaction.setAccount(AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId())));
+        transaction.setTransfered_account(AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getTransfered_account_id())));
         transaction.setTransactionType(transactionDTO.getTransactionType());
         transaction.setAmount(transactionDTO.getAmount());
         transaction.setTransactionDate(transactionDTO.getTransactionDate());
