@@ -27,6 +27,7 @@ public class userServiceImpl implements userService {
     public UserDTO insertUser(UserDTO userDTO) {
         User user=UserDTO.prepareUserEntity(userDTO);
         User user1=userRepository.save(user);
+        System.out.println(user1.getUserId());
         return User.prepareUserDTO(user1);
     }
 

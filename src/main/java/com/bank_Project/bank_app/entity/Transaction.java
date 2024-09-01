@@ -23,7 +23,7 @@ public class Transaction {
     private Account account;
 
     @ManyToOne
-    @JoinColumn(name="account_id")
+    @JoinColumn(name="account_id",insertable = false, updatable = false, nullable = true)
     private Account transfered_account;
 
     @Enumerated(EnumType.STRING)

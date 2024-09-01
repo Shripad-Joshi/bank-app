@@ -36,6 +36,7 @@ public class User {
 
     public static UserDTO prepareUserDTO(User userEntity){
         UserDTO userDTO=new UserDTO();
+        System.out.println(userEntity.getUserId());
         userDTO.setUserId(userEntity.getUserId());
         userDTO.setUsername(userEntity.getUsername());
         userDTO.setName(userEntity.getName());

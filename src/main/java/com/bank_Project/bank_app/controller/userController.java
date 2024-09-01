@@ -18,6 +18,7 @@ public class userController {
     @PostMapping(consumes="application/json",path="/addUser")
     public ResponseEntity<ApiResponse<UserDTO>> addUser(@RequestBody UserDTO userDTO){
         UserDTO userDTO1=userService.insertUser(userDTO);
+        System.out.println(userDTO1.getUserId());
         ApiResponse<UserDTO> apiResponse=new ApiResponse<>("User created successfully.",200,userDTO1);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
