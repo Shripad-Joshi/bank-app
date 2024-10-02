@@ -26,22 +26,21 @@ public class AccountDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
-    @Autowired
-    static userServiceImpl userService;
-
     public AccountDTO(){
         createdAt=LocalDateTime.now();
         updateAt=LocalDateTime.now();
     }
 
-    public static Account prepareAccountEntity(AccountDTO accountDTO){
+    public static Account prepareAccountEntity(AccountDTO accountDTO,UserDTO userDTO){
         Account account=new Account();
         account.setAccount_id(accountDTO.getAccount_id());
-        account.setUser(UserDTO.prepareUserEntity(userService.getUserById(accountDTO.getUserId())));
+        account.setUser(UserDTO.prepareUserEntity(userDTO));
         account.setAccount_number(accountDTO.getAccount_number());
         account.setBalance(accountDTO.getBalance());
         account.setStatus(accountDTO.getStatus());
         account.setAccountType(accountDTO.getAccountType());
+        account.setCreatedAt(accountDTO.getCreatedAt());
+        account.setUpdateAt(accountDTO.getUpdateAt());
         return account;
     }
 }

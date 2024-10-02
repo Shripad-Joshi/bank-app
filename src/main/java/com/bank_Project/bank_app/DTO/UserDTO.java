@@ -1,6 +1,7 @@
 package com.bank_Project.bank_app.DTO;
 
 import com.bank_Project.bank_app.entity.User;
+import com.bank_Project.bank_app.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class UserDTO {
     private String name;
     private LocalDate dob;
     private String password;
+    private UserRole role;
     private String email;
     private String phoneNumber;
     private LocalDateTime createdAt;
@@ -34,6 +36,7 @@ public class UserDTO {
         user.setName(userDTO.name);
         user.setDob(LocalDate.parse(userDTO.getDob().toString()));
         user.setPassword(userDTO.password);
+        user.setRole(userDTO.getRole());
         user.setEmail(userDTO.email);
         user.setPhoneNumber(userDTO.phoneNumber);
         user.setCreatedAt(userDTO.createdAt);

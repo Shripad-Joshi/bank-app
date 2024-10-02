@@ -1,6 +1,7 @@
 package com.bank_Project.bank_app.entity;
 
 import com.bank_Project.bank_app.DTO.UserDTO;
+import com.bank_Project.bank_app.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="users")
+@Table(name="users", uniqueConstraints = {
+        @UniqueConstraint(columnNames={"username","email","phoneNumber"})
+})
 @Getter
 @Setter
 public class User {
@@ -20,12 +23,14 @@ public class User {
     private Long userId;
     private String name;
     private LocalDate dob;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String username;
     private String password;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
+    private UserRole role;
+    @Column(nullable = false)
     private String email;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(name="created_At",updatable=false)
@@ -36,12 +41,12 @@ public class User {
 
     public static UserDTO prepareUserDTO(User userEntity){
         UserDTO userDTO=new UserDTO();
-        System.out.println(userEntity.getUserId());
         userDTO.setUserId(userEntity.getUserId());
         userDTO.setUsername(userEntity.getUsername());
         userDTO.setName(userEntity.getName());
         userDTO.setDob(userEntity.getDob());
         userDTO.setPassword(userEntity.getPassword());
+        userDTO.setRole(userEntity.getRole());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setPhoneNumber(userEntity.getPhoneNumber());
         userDTO.setCreatedAt(userEntity.getCreatedAt());

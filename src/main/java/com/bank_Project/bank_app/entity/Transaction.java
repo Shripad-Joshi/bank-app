@@ -16,15 +16,15 @@ import java.time.LocalDateTime;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long transaction_id;
 
     @ManyToOne
     @JoinColumn(name="account_id",nullable = false)
-    private Account account;
+    private Account accountId;
 
     @ManyToOne
     @JoinColumn(name="account_id",insertable = false, updatable = false, nullable = true)
-    private Account transfered_account;
+    private Account transfered_account_id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -50,9 +50,9 @@ public class Transaction {
 
     public static TransactionDTO prepareTransactionDTO(Transaction transaction){
         TransactionDTO transactionDTO=new TransactionDTO();
-        transactionDTO.setTransaction_id(transaction.getId());
-        transactionDTO.setAccountId(transaction.getAccount().getAccount_id());
-        transactionDTO.setTransfered_account_id(transaction.getTransfered_account().getAccount_id());
+        transactionDTO.setTransaction_id(transaction.getTransaction_id());
+        transactionDTO.setAccountId(transaction.getAccountId().getAccount_id());
+        transactionDTO.setTransfered_account_id(transaction.getTransfered_account_id().getAccount_id());
         transactionDTO.setTransactionType(transaction.getTransactionType());
         transactionDTO.setAmount(transaction.getAmount());
         transactionDTO.setTransactionDate(transaction.getTransactionDate());

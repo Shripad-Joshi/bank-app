@@ -3,23 +3,16 @@ package com.bank_Project.bank_app.DTO;
 import com.bank_Project.bank_app.entity.Transaction;
 import com.bank_Project.bank_app.enums.TransactionStatus;
 import com.bank_Project.bank_app.enums.TransactionType;
-import com.bank_Project.bank_app.service.Impl.accountServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class TransactionDTO {
-
-    @Autowired
-    static accountServiceImpl accountService;
 
     private Long transaction_id;
     private Long accountId;
@@ -32,12 +25,15 @@ public class TransactionDTO {
     private double balance_before;
     private double balance_after;
 
+    public TransactionDTO(){
+        transactionDate=LocalDateTime.now();
+    }
 
-    public static Transaction prepareTransactionEntity(TransactionDTO transactionDTO){
+    public static Transaction prepareTransactionEntity(TransactionDTO transactionDTO,UserDTO userDTO,AccountDTO accountDTO){
         Transaction transaction=new Transaction();
-        transaction.setId(transactionDTO.getTransaction_id());
-        transaction.setAccount(AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId())));
-        transaction.setTransfered_account(AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getTransfered_account_id())));
+        transaction.setTransaction_id(transactionDTO.getTransaction_id());
+        transaction.setAccountId(AccountDTO.prepareAccountEntity(accountDTO,userDTO));
+        transaction.setTransfered_account_id(AccountDTO.prepareAccountEntity(accountDTO,userDTO));
         transaction.setTransactionType(transactionDTO.getTransactionType());
         transaction.setAmount(transactionDTO.getAmount());
         transaction.setTransactionDate(transactionDTO.getTransactionDate());

@@ -49,11 +49,11 @@ public class Account {
         accountDTO.setAccount_id(account.getAccount_id());
         accountDTO.setAccount_number(account.getAccount_number());
         accountDTO.setUserId(account.getUser().getUserId());
-        accountDTO.setBalance(accountDTO.getBalance());
-        accountDTO.setStatus(accountDTO.getStatus());
-        accountDTO.setAccountType(accountDTO.getAccountType());
-        accountDTO.setCreatedAt(accountDTO.getCreatedAt());
-        accountDTO.setUpdateAt(accountDTO.getUpdateAt());
+        accountDTO.setBalance(account.getBalance());
+        accountDTO.setStatus(account.getStatus());
+        accountDTO.setAccountType(account.getAccountType());
+        accountDTO.setCreatedAt(account.getCreatedAt());
+        accountDTO.setUpdateAt(account.getUpdateAt());
         return accountDTO;
     }
 }

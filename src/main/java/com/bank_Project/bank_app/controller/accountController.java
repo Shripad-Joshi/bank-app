@@ -17,14 +17,15 @@ public class accountController {
     @Autowired
     accountServiceImpl accountService;
 
-    @PostMapping(consumes = "json/application",path="/addAccount")
+
+    @PostMapping(consumes = "application/json",path="/addAccount")
     public ResponseEntity<ApiResponse<AccountDTO>> insertAccount(@RequestBody AccountDTO accountDTO){
         AccountDTO accountDTO1=accountService.insertAccount(accountDTO);
         ApiResponse<AccountDTO> apiResponse=new ApiResponse<>("Account created successfully.",200,accountDTO1);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping(produces = "json/application",path="/getAccount")
+    @GetMapping(produces = "application/json",path="/getAccount")
     public ResponseEntity<ApiResponse<AccountDTO>> getAccount(@RequestParam Long id){
         AccountDTO accountDTO=accountService.getAccountById(id);
         ApiResponse<AccountDTO> apiResponse;
@@ -36,7 +37,7 @@ public class accountController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
-    @DeleteMapping(produces="json/application",path = "/deleteAccount")
+    @DeleteMapping(produces="application/json",path = "/deleteAccount")
     public ResponseEntity<ApiResponse<AccountDTO>> deleteAccount(@RequestParam Long id){
         ApiResponse apiResponse;
         if(accountService.checkAccount(id)!=null){
@@ -49,7 +50,7 @@ public class accountController {
         }
     }
 
-    @PostMapping(consumes="json/application",produces="json/application",path="/updateAccount")
+    @PostMapping(consumes="application/json",produces="application/json",path="/updateAccount")
     public ResponseEntity<ApiResponse<AccountDTO>> updateAccount(@RequestParam Long id,@RequestBody AccountDTO accountDTO){
         ApiResponse apiResponse;
         if(accountService.checkAccount(id)!=null){
@@ -62,7 +63,7 @@ public class accountController {
         }
     }
 
-    @GetMapping(produces = "json/application",path="/getAccountByUserId")
+    @GetMapping(produces = "application/json",path="/getAccountByUserId")
     public ResponseEntity<ApiResponse<AccountDTO>> getAllAccount(@RequestParam Long id){
         List<AccountDTO> accountDTOList=accountService.getAccountListByUserId(id);
         if(accountDTOList.isEmpty()!=true) {

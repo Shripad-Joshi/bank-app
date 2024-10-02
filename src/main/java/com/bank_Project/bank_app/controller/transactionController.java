@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/transaction")
 public class transactionController {
-    //withdrawl, deposit, transfer, 5 , 10
     @Autowired
     transactionServiceImpl transactionService;
 
@@ -31,7 +30,7 @@ public class transactionController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    /*@GetMapping(produces="application/json",path="/getlast5transaction")
+    @GetMapping(produces="application/json",path="/getlast5transaction")
     public ResponseEntity<ApiResponse<TransactionDTO>> last5Transaction(@RequestParam Long account_id){
         List<TransactionDTO> transactionDTOList=transactionService.last5Transactions(account_id);
         if(transactionDTOList.isEmpty()!=true) {
@@ -53,12 +52,12 @@ public class transactionController {
             ApiResponse apiResponse=new ApiResponse<>("No transaction found.",404,null);
             return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
         }
-    }*/
+    }
 
-    @PostMapping(produces = "application/json",consumes="application/json",path="/transfer")
+   /* @PostMapping(produces = "application/json",consumes="application/json",path="/transfer")
     public ResponseEntity<ApiResponse<TransactionDTO>> transfer(@RequestBody TransactionDTO transactionDTO){
         TransactionDTO transactionDTO1=transactionService.transfer(transactionDTO);
         ApiResponse apiResponse=new ApiResponse<>("Transfer complete.",200,transactionDTO1);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
-    }
+    }*/
 }

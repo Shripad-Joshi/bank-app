@@ -9,8 +9,10 @@ import org.modelmapper.Condition;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,16 @@ public class userServiceImpl implements userService {
     @Autowired
     userRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
+    public userServiceImpl(){
+        this.passwordEncoder=null;
+    }
+
+    public userServiceImpl(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -26,8 +38,8 @@ public class userServiceImpl implements userService {
     @Override
     public UserDTO insertUser(UserDTO userDTO) {
         User user=UserDTO.prepareUserEntity(userDTO);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user1=userRepository.save(user);
-        System.out.println(user1.getUserId());
         return User.prepareUserDTO(user1);
     }
 

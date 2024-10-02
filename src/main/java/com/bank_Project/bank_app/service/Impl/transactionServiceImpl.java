@@ -5,11 +5,12 @@ import com.bank_Project.bank_app.DTO.TransactionDTO;
 import com.bank_Project.bank_app.advice.AccountInactiveException;
 import com.bank_Project.bank_app.entity.Account;
 import com.bank_Project.bank_app.entity.Transaction;
+import com.bank_Project.bank_app.enums.AccountStatus;
+import com.bank_Project.bank_app.enums.TransactionStatus;
 import com.bank_Project.bank_app.repository.transactionRepository;
 import com.bank_Project.bank_app.service.transactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,37 +23,50 @@ public class transactionServiceImpl implements transactionService {
     accountServiceImpl accountService;
 
     @Autowired
+    userServiceImpl userService;
+
+    @Autowired
     transactionRepository transactionRepository;
 
     @Autowired
     private ModelMapper modelMapper;
+
         @Override
     public TransactionDTO deposit(TransactionDTO transactionDTO) {
-        if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus().equals("Active")){
-            Account account= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()));
+        if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus()== AccountStatus.Active){
+            Account account= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()),
+                    userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()));
             double balance=account.getBalance();
+            transactionDTO.setBalance_before(account.getBalance());
             account.setBalance(balance+transactionDTO.getAmount());
             AccountDTO accountDTO=accountService.updateAccount(account.getAccount_id(),Account.prepareAccountDTO(account));
-            transactionDTO.setBalance_before(account.getBalance());
             transactionDTO.setBalance_after(accountDTO.getBalance());
-            transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO));
+            transactionDTO.setTransactionStatus(TransactionStatus.Completed);
+            transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO,
+                    userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()),
+                    accountService.getAccountById(transactionDTO.getAccountId())));
             return transactionDTO;
         }else {
             //inactive
             throw new AccountInactiveException("Account Inactive.");
         }
     }
+
 
     @Override
     public TransactionDTO withdrawal(TransactionDTO transactionDTO) {
-        if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus().equals("Active")){
-            Account account= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()));
+        if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus()== AccountStatus.Active){
+            Account account= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()),
+                    userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()));
             double balance=account.getBalance();
+            transactionDTO.setBalance_before(account.getBalance());
             account.setBalance(balance-transactionDTO.getAmount());
             AccountDTO accountDTO=accountService.updateAccount(account.getAccount_id(),Account.prepareAccountDTO(account));
-            transactionDTO.setBalance_before(account.getBalance());
             transactionDTO.setBalance_after(accountDTO.getBalance());
-            transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO));
+            transactionDTO.setTransactionStatus(TransactionStatus.Completed);
+            transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO,
+                    userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()),
+                    accountService.getAccountById(transactionDTO.getAccountId())));
             return transactionDTO;
         }else {
             //inactive
@@ -60,34 +74,47 @@ public class transactionServiceImpl implements transactionService {
         }
     }
 
-    @Override
+    /*@Override
     public TransactionDTO transfer(TransactionDTO transactionDTO) {
-            if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus().equals("Active") ||
-                    accountService.getAccountById(transactionDTO.getTransfered_account_id()).getStatus().equals("Active")){
-                Account debit= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()));
-                Account credit= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()));
+            
+            if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus()== AccountStatus.Active ||
+                    accountService.getAccountById(transactionDTO.getTransfered_account_id()).getStatus()== AccountStatus.Active){
+                Account debit= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getAccountId()),
+                        userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()));
+
+                Account credit= AccountDTO.prepareAccountEntity(accountService.getAccountById(transactionDTO.getTransfered_account_id()),
+                        userService.getUserById(accountService.getAccountById(transactionDTO.getTransfered_account_id()).getUserId()));
+
                 double balance_debit=debit.getBalance();
                 double balance_credit=credit.getBalance();
+                transactionDTO.setBalance_before(balance_debit);
+                transactionDTO.setBalance_before(balance_credit);
                 debit.setBalance(balance_debit-transactionDTO.getAmount());
                 debit.setBalance(balance_credit+transactionDTO.getAmount());
                 //should check if balance available for transfer in debit and transaction entry should be added in both debit and credit
                 AccountDTO accountDTO=accountService.updateAccount(debit.getAccount_id(),Account.prepareAccountDTO(debit));
                 AccountDTO accountDTO1=accountService.updateAccount(credit.getAccount_id(), Account.prepareAccountDTO(credit));
-                transactionDTO.setBalance_before(balance_debit);
                 transactionDTO.setBalance_after(accountDTO.getBalance());
-                transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO));
-                transactionDTO.setBalance_before(balance_credit);
+                transactionDTO.setTransactionStatus(TransactionStatus.Completed);
+                transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO,
+                        userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()),
+                        accountService.getAccountById(transactionDTO.getAccountId())));
                 transactionDTO.setBalance_after(accountDTO1.getBalance());
-                transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO));
+                transactionDTO.setTransactionStatus(TransactionStatus.Completed);
+                transactionRepository.save(TransactionDTO.prepareTransactionEntity(transactionDTO,
+                        userService.getUserById(accountService.getAccountById(transactionDTO.getAccountId()).getUserId()),
+                        accountService.getAccountById(transactionDTO.getAccountId())));
                 return transactionDTO;
             }else{
                 throw new AccountInactiveException("Account Inactive.");
             }
     }
-
-   /* @Override
+*/
+    @Override
     public List<TransactionDTO> last5Transactions(Long account_id) {
-        List<Transaction> transactionList=transactionRepository.findTop5ByAccountIdOrderByTransactionDateDesc(account_id);
+        List<Transaction> transactionList=transactionRepository.findTop5ByAccountIdOrderByTransactionDateDesc(
+                AccountDTO.prepareAccountEntity(accountService.getAccountById(account_id),
+                        userService.getUserById(accountService.getAccountById(account_id).getUserId())));
         return transactionList.stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDTO.class))
                 .collect(Collectors.toList());
@@ -95,9 +122,12 @@ public class transactionServiceImpl implements transactionService {
 
     @Override
     public List<TransactionDTO> last10Transactions(Long account_id) {
-        List<Transaction> transactionList=transactionRepository.findTop10ByAccountIdByTransactionDateDesc(account_id);
+        List<Transaction> transactionList=transactionRepository.findTop10ByAccountIdOrderByTransactionDateDesc(
+                AccountDTO.prepareAccountEntity(accountService.getAccountById(account_id),
+                        userService.getUserById(accountService.getAccountById(account_id).getUserId())));
+        int a=5-8;
         return transactionList.stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDTO.class))
                 .collect(Collectors.toList());
-    }*/
+    }
 }
