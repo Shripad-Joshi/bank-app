@@ -52,6 +52,7 @@ public class transactionController {
             ApiResponse apiResponse=new ApiResponse<>("No transaction found.",404,null);
             return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
         }
+
     }
 
    /* @PostMapping(produces = "application/json",consumes="application/json",path="/transfer")

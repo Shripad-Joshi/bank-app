@@ -116,7 +116,22 @@ public class transactionServiceImpl implements transactionService {
                 AccountDTO.prepareAccountEntity(accountService.getAccountById(account_id),
                         userService.getUserById(accountService.getAccountById(account_id).getUserId())));
         return transactionList.stream()
-                .map(transaction -> modelMapper.map(transaction, TransactionDTO.class))
+                .map(transaction -> {
+                    TransactionDTO transactionDTO = new TransactionDTO();
+                    transactionDTO.setTransaction_id(transaction.getTransaction_id());
+                    transactionDTO.setAccountId(transaction.getAccountId().getAccount_id());
+                    if (transaction.getTransfered_account_id() != null) {
+                        transactionDTO.setTransfered_account_id(transaction.getTransfered_account_id().getAccount_id());
+                    }
+                    transactionDTO.setTransactionType(transaction.getTransactionType());
+                    transactionDTO.setAmount(transaction.getAmount());
+                    transactionDTO.setTransactionDate(transaction.getTransactionDate());
+                    transactionDTO.setTransactionStatus(transaction.getTransactionStatus());
+                    transactionDTO.setDescription(transaction.getDescription());
+                    transactionDTO.setBalance_before(transaction.getBalance_before());
+                    transactionDTO.setBalance_after(transaction.getBalance_after());
+                    return transactionDTO;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -125,9 +140,23 @@ public class transactionServiceImpl implements transactionService {
         List<Transaction> transactionList=transactionRepository.findTop10ByAccountIdOrderByTransactionDateDesc(
                 AccountDTO.prepareAccountEntity(accountService.getAccountById(account_id),
                         userService.getUserById(accountService.getAccountById(account_id).getUserId())));
-        int a=5-8;
         return transactionList.stream()
-                .map(transaction -> modelMapper.map(transaction, TransactionDTO.class))
+                .map(transaction -> {
+                    TransactionDTO transactionDTO = new TransactionDTO();
+                    transactionDTO.setTransaction_id(transaction.getTransaction_id());
+                    transactionDTO.setAccountId(transaction.getAccountId().getAccount_id());
+                    if (transaction.getTransfered_account_id() != null) {
+                        transactionDTO.setTransfered_account_id(transaction.getTransfered_account_id().getAccount_id());
+                    }
+                    transactionDTO.setTransactionType(transaction.getTransactionType());
+                    transactionDTO.setAmount(transaction.getAmount());
+                    transactionDTO.setTransactionDate(transaction.getTransactionDate());
+                    transactionDTO.setTransactionStatus(transaction.getTransactionStatus());
+                    transactionDTO.setDescription(transaction.getDescription());
+                    transactionDTO.setBalance_before(transaction.getBalance_before());
+                    transactionDTO.setBalance_after(transaction.getBalance_after());
+                    return transactionDTO;
+                })
                 .collect(Collectors.toList());
     }
 }
