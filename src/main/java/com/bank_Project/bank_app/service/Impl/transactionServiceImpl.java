@@ -74,7 +74,7 @@ public class transactionServiceImpl implements transactionService {
         }
     }
 
-    /*@Override
+    @Override
     public TransactionDTO transfer(TransactionDTO transactionDTO) {
             
             if(accountService.getAccountById(transactionDTO.getAccountId()).getStatus()== AccountStatus.Active ||
@@ -87,10 +87,10 @@ public class transactionServiceImpl implements transactionService {
 
                 double balance_debit=debit.getBalance();
                 double balance_credit=credit.getBalance();
-                transactionDTO.setBalance_before(balance_debit);
+                /*transactionDTO.setBalance_before(balance_debit);
                 transactionDTO.setBalance_before(balance_credit);
-                debit.setBalance(balance_debit-transactionDTO.getAmount());
-                debit.setBalance(balance_credit+transactionDTO.getAmount());
+                */debit.setBalance(balance_debit-transactionDTO.getAmount());
+                credit.setBalance(balance_credit+transactionDTO.getAmount());
                 //should check if balance available for transfer in debit and transaction entry should be added in both debit and credit
                 AccountDTO accountDTO=accountService.updateAccount(debit.getAccount_id(),Account.prepareAccountDTO(debit));
                 AccountDTO accountDTO1=accountService.updateAccount(credit.getAccount_id(), Account.prepareAccountDTO(credit));
@@ -109,7 +109,7 @@ public class transactionServiceImpl implements transactionService {
                 throw new AccountInactiveException("Account Inactive.");
             }
     }
-*/
+
     @Override
     public List<TransactionDTO> last5Transactions(Long account_id) {
         List<Transaction> transactionList=transactionRepository.findTop5ByAccountIdOrderByTransactionDateDesc(

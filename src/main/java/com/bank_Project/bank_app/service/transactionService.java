@@ -11,7 +11,7 @@ public interface transactionService {
 
     public TransactionDTO withdrawal(TransactionDTO transactionDTO);
 
-    //public TransactionDTO transfer(TransactionDTO transactionDTO);
+    public TransactionDTO transfer(TransactionDTO transactionDTO);
 
     public List<TransactionDTO> last5Transactions(Long account_id);
 

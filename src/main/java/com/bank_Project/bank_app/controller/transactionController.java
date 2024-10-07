@@ -55,10 +55,10 @@ public class transactionController {
 
     }
 
-   /* @PostMapping(produces = "application/json",consumes="application/json",path="/transfer")
+    @PostMapping(produces = "application/json",consumes="application/json",path="/transfer")
     public ResponseEntity<ApiResponse<TransactionDTO>> transfer(@RequestBody TransactionDTO transactionDTO){
         TransactionDTO transactionDTO1=transactionService.transfer(transactionDTO);
         ApiResponse apiResponse=new ApiResponse<>("Transfer complete.",200,transactionDTO1);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
-    }*/
+    }
 }
