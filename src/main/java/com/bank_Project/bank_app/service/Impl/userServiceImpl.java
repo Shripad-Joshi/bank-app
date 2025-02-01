@@ -23,10 +23,6 @@ public class userServiceImpl implements userService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public userServiceImpl(){
-        this.passwordEncoder=null;
-    }
-
     public userServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -37,6 +33,7 @@ public class userServiceImpl implements userService {
 
     @Override
     public UserDTO insertUser(UserDTO userDTO) {
+        userDTO.setUserId(null);
         User user=UserDTO.prepareUserEntity(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user1=userRepository.save(user);

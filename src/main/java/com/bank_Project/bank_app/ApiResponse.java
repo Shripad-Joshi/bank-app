@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class ApiResponse<T> {
     private String message;
-    private int errorCode;
+    private int responseCode;
     private T data;
 }

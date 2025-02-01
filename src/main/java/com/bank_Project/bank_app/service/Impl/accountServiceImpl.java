@@ -30,6 +30,7 @@ public class accountServiceImpl implements accountService {
 
     @Override
     public AccountDTO insertAccount(AccountDTO accountDTO) {
+        accountDTO.setAccount_id(null);
         Account acc=AccountDTO.prepareAccountEntity(accountDTO,userService.getUserById(accountDTO.getUserId()));
         Account account=accountRepository.save(acc);
         return Account.prepareAccountDTO(account);

@@ -49,7 +49,7 @@ public class userController {
         }
     }
 
-    @PostMapping(consumes = "application/json",produces = "json/application",path="/updateUser")
+    @PostMapping(consumes = "application/json",produces = "application/json",path="/updateUser")
     public ResponseEntity<ApiResponse<UserDTO>> updateUser(@RequestParam("Id") Long id,@RequestBody UserDTO userDTO){
         ApiResponse<UserDTO> apiResponse;
         if(userService.checkUser(id)!= null) {

@@ -41,7 +41,7 @@ public class accountController {
     public ResponseEntity<ApiResponse<AccountDTO>> deleteAccount(@RequestParam Long id){
         ApiResponse apiResponse;
         if(accountService.checkAccount(id)!=null){
-            AccountDTO accountDTO=accountService.getAccountById(id);
+            AccountDTO accountDTO=accountService.deleteAccount(id);
             apiResponse=new ApiResponse("Account delete successfully",200,accountDTO);
             return new ResponseEntity<>(apiResponse,HttpStatus.OK);
         }else{
